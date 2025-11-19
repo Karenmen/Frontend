@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:background="#FFF3E0"
+    android:padding="16dp"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/txtCategoryTitle"
+        android:text="Categoría"
+        android:textColor="#C62828"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:layout_marginBottom="12dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+    <EditText
+        android:id="@+id/edtSearchProducts"
+        android:hint="Buscar producto..."
+        android:padding="14dp"
+        android:textSize="16sp"
+        android:background="@drawable/search_box_orange"
+        android:drawableStart="@drawable/ic_search_orange"
+        android:drawablePadding="12dp"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"/>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerProducts"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="14dp"/>
+</LinearLayout>
