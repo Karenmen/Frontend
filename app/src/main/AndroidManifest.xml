@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="com.example.frontend">
@@ -11,22 +12,21 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Frontend">
-
+        <activity
+            android:name=".CartActivity"
+            android:exported="false" />
         <!-- Actividad de inicio -->
-        <activity android:name=".CategoriesActivity"
+        <activity
+            android:name=".CategoriesActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>
-
-        <!-- Productos (se abre desde CategoriesActivity) -->
-        <activity android:name=".ProductsActivity" />
-
-        <!-- MainActivity ya no es necesaria como inicio -->
+        </activity> <!-- Productos (se abre desde CategoriesActivity) -->
+        <activity android:name=".ProductsActivity" /> <!-- MainActivity ya no es necesaria como inicio -->
         <activity android:name=".MainActivity" />
-
     </application>
 
 </manifest>

@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.frontend.adapters.CategoryAdapter
 import com.example.frontend.models.Category
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 class CategoriesActivity : AppCompatActivity() {
 
@@ -28,6 +29,12 @@ class CategoriesActivity : AppCompatActivity() {
         recycler.adapter = CategoryAdapter(categories) { category ->
             val intent = Intent(this, ProductsActivity::class.java)
             intent.putExtra("categoryName", category.name)
+            startActivity(intent)
+        }
+
+        val fabCart = findViewById<FloatingActionButton>(R.id.fabCart)
+        fabCart.setOnClickListener {
+            val intent = Intent(this, CartActivity::class.java)
             startActivity(intent)
         }
     }
