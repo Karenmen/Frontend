@@ -19,6 +19,6 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "Frontend"
+rootProject.name = "Pozoleria"
 include(":app")
  
