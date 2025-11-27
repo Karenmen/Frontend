@@ -28,7 +28,7 @@
         <activity android:name=".ProductsActivity" android:exported="false" />
 
         <!-- Categorías -->
-        <activity android:name=".CategoriesActivity" android:exported="false" />
+        <activity android:name=".CategoryActivity" android:exported="false" />
 
         <!-- Carrito -->
         <activity android:name=".CartActivity" android:exported="false" />

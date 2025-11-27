@@ -10,10 +10,12 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.ViewPager2;
 
+import com.example.pozoleria.adapters.CategoryAdapter;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.ArrayList;
 import java.util.List;
+import com.example.pozoleria.models.CategoryItem;
 
 public class HomeActivity extends AppCompatActivity {
 
@@ -62,7 +64,7 @@ public class HomeActivity extends AppCompatActivity {
         if (id == R.id.nav_home) return true;
 
         if (id == R.id.nav_categories) {   // ← AQUI ESTABA EL FALTANTE
-            startActivity(new Intent(this, CategoriesActivity.class));
+            startActivity(new Intent(this, CategoryActivity.class));
             return true;
         }
 
