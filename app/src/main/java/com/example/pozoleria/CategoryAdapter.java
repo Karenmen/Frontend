@@ -35,13 +35,9 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
     public void onBindViewHolder(@NonNull CategoryViewHolder holder, int position) {
         final CategoryItem item = items.get(position);
 
-        // TEXTO (usa getTitle porque así viene en tu CategoryItem)
         holder.txtCategoryName.setText(item.getTitle());
-
-        // IMAGEN (usa getImageResId porque así viene en tu CategoryItem)
         holder.imgCategory.setImageResource(item.getImageResId());
 
-        // Click por si quieres abrir productos
         holder.itemView.setOnClickListener(v -> {
             Intent intent = new Intent(context, ProductsActivity.class);
             intent.putExtra("categoryName", item.getTitle());
@@ -61,7 +57,6 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
         public CategoryViewHolder(@NonNull View itemView) {
             super(itemView);
 
-            // IDs EXACTOS según tu item_category.xml REAL
             imgCategory = itemView.findViewById(R.id.imgCategory);
             txtCategoryName = itemView.findViewById(R.id.txtCategoryName);
         }
