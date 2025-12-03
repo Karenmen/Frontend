@@ -1,4 +1,4 @@
-package com.example.pozoleria;
+package com.example.pozoleria.adapters;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,6 +9,9 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.pozoleria.R;
+import com.example.pozoleria.models.CartItem;
+
 import java.util.List;
 
 public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartViewHolder> {
@@ -18,7 +21,6 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartViewHolder
     public CartAdapter(List<CartItem> items) {
         this.items = items;
     }
-
 
     @NonNull
     @Override
@@ -63,9 +65,12 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartViewHolder
 
         public CartViewHolder(@NonNull View itemView) {
             super(itemView);
-            txtName = itemView.findViewById(R.id.txtItemName);
-            txtQuantity = itemView.findViewById(R.id.txtQuantity);
-            txtPrice = itemView.findViewById(R.id.txtPrice);
+
+            // OJO: estos IDs deben existir en item_cart.xml
+            txtName = itemView.findViewById(R.id.txtCartName);
+            txtQuantity = itemView.findViewById(R.id.txtCartQuantity);
+            txtPrice = itemView.findViewById(R.id.txtCartPrice);
+
             btnMinus = itemView.findViewById(R.id.btnMinus);
             btnPlus = itemView.findViewById(R.id.btnPlus);
         }

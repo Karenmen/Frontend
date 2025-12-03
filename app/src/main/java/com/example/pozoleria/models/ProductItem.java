@@ -1,4 +1,4 @@
-package com.example.pozoleria;
+package com.example.pozoleria.models;
 
 public class ProductItem {
 

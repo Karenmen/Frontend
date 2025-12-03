@@ -1,4 +1,4 @@
-package com.example.pozoleria;
+package com.example.pozoleria.adapters;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -12,15 +12,18 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.pozoleria.R;
+import com.example.pozoleria.models.Producto;
+import com.example.pozoleria.models.CartStorage;
+
 import java.util.List;
-import java.util.Locale;
 
 public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductViewHolder> {
 
     private Context context;
-    private List<ProductItem> productList;
+    private List<Producto> productList;
 
-    public ProductAdapter(Context context, List<ProductItem> productList) {
+    public ProductAdapter(Context context, List<Producto> productList) {
         this.context = context;
         this.productList = productList;
     }
@@ -28,29 +31,21 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
     @NonNull
     @Override
     public ProductViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context)
-                .inflate(R.layout.item_product, parent, false);
+        View view = LayoutInflater.from(context).inflate(R.layout.item_product, parent, false);
         return new ProductViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull ProductViewHolder holder, int position) {
-        ProductItem product = productList.get(position);
 
-        holder.txtProductName.setText(product.getName());
+        Producto producto = productList.get(position);
 
-        String priceText = String.format(Locale.getDefault(), "$%.2f", product.getPrice());
-        holder.txtProductPrice.setText(priceText);
-
-        holder.imgProduct.setImageResource(product.getImageResId());
+        holder.txtProductName.setText(producto.getNombre());
+        holder.txtProductPrice.setText("$" + producto.getPrecio());
 
         holder.btnAgregar.setOnClickListener(v -> {
-            // 👇 Llamada correcta al object de Kotlin
-            CartStorage.INSTANCE.addItem(product.getName(), product.getPrice());
-
-            Toast.makeText(context,
-                    product.getName() + " agregado al carrito",
-                    Toast.LENGTH_SHORT).show();
+            CartStorage.INSTANCE.addItem(producto.getNombre(), producto.getPrecio());
+            Toast.makeText(context, "Agregado al carrito", Toast.LENGTH_SHORT).show();
         });
     }
 
@@ -67,6 +62,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
 
         public ProductViewHolder(@NonNull View itemView) {
             super(itemView);
+
             imgProduct = itemView.findViewById(R.id.imgProduct);
             txtProductName = itemView.findViewById(R.id.txtProductName);
             txtProductPrice = itemView.findViewById(R.id.txtProductPrice);

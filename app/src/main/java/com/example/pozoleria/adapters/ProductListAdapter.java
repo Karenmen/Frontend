@@ -1,4 +1,4 @@
-package com.example.pozoleria;
+package com.example.pozoleria.adapters;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -10,14 +10,18 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.pozoleria.R;
+import com.example.pozoleria.models.ProductItem;
+import com.example.pozoleria.models.CartStorage;
+
 import java.util.List;
 import java.util.Locale;
 
 public class ProductListAdapter extends BaseAdapter {
 
-    private Context context;
-    private List<ProductItem> productList;
-    private LayoutInflater inflater;
+    private final Context context;
+    private final List<ProductItem> productList;
+    private final LayoutInflater inflater;
 
     public ProductListAdapter(Context context, List<ProductItem> productList) {
         this.context = context;
@@ -60,12 +64,8 @@ public class ProductListAdapter extends BaseAdapter {
         price.setText(String.format(Locale.getDefault(), "$%.2f", product.getPrice()));
 
         btnAgregar.setOnClickListener(v -> {
-
             CartStorage.INSTANCE.addItem(product.getName(), product.getPrice());
-
-            Toast.makeText(context,
-                    product.getName() + " agregado al carrito",
-                    Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, product.getName() + " agregado al carrito", Toast.LENGTH_SHORT).show();
         });
 
         return row;

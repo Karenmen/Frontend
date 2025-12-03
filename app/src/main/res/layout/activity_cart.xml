@@ -26,4 +26,16 @@
         android:text="Proceder al pago"
         android:background="#D9681D"
         android:textColor="#FFFFFF" />
+
+    <TextView
+        android:id="@+id/txtTotal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Total: $0.00"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:padding="16dp"
+        android:gravity="end"
+        android:textColor="#000000"/>
+
 </LinearLayout>

@@ -1,4 +1,4 @@
-package com.example.pozoleria
+package com.example.pozoleria.models
 
 data class CartItem(
     val name: String,
