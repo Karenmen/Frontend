@@ -13,7 +13,7 @@ public class CartActivity extends AppCompatActivity {
 
     private ListView listaCarrito;
     private CartListAdapter adapter;
-    private TextView txtTotal;
+    private TextView txtTotal;  // ← este sí existe en activity_cart.xml
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -21,12 +21,16 @@ public class CartActivity extends AppCompatActivity {
         setContentView(R.layout.activity_cart);
 
         listaCarrito = findViewById(R.id.listaCarrito);
-        txtTotal = findViewById(R.id.txtTotal); // <-- Asegúrate que exista en activity_cart.xml
+        txtTotal = findViewById(R.id.txtTotal);  // ← se encontró con éxito
 
         adapter = new CartListAdapter(this, CartStorage.INSTANCE.getItems());
+
+        // Cuando el carrito cambie, recalculamos total
+        adapter.setOnCartChangeListener(() -> updateTotal());
+
         listaCarrito.setAdapter(adapter);
 
-        updateTotal();
+        updateTotal(); // Carga inicial
     }
 
     @Override
@@ -36,10 +40,8 @@ public class CartActivity extends AppCompatActivity {
         updateTotal();
     }
 
-    // ------------------------------
-    //  MÉTODO PARA ACTUALIZAR TOTAL
-    // ------------------------------
-    public void updateTotal() {
+
+    private void updateTotal() {
         double total = CartStorage.INSTANCE.getTotal();
         txtTotal.setText(String.format("Total: $%.2f", total));
     }
