@@ -42,8 +42,8 @@ class ProductsActivity : AppCompatActivity() {
     }
 
     private fun cargarProductos(categoria: String) {
-        val categoriaCodificada = URLEncoder.encode(categoria, StandardCharsets.UTF_8.toString())
-        val url = "http://10.0.2.2:3000/api/productos/categoria/$categoriaCodificada"
+
+        val url = "http://10.0.2.2:3000/api/productos/categoria/$categoria"
         Log.d("ProductsActivity", "URL: $url")
 
         val request = JsonArrayRequest(
@@ -75,4 +75,5 @@ class ProductsActivity : AppCompatActivity() {
 
         Volley.newRequestQueue(this).add(request)
     }
+
 }

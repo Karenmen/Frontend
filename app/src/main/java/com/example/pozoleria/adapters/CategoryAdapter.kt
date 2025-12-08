@@ -14,9 +14,10 @@ import com.example.pozoleria.models.CategoryItem
 
 class CategoryAdapter(
     private val context: Context,
-    private val items: List<CategoryItem>
+    private var items: MutableList<CategoryItem>
 ) : RecyclerView.Adapter<CategoryAdapter.CategoryViewHolder>() {
 
+    // ViewHolder para cada tarjeta
     class CategoryViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val imgCategory: ImageView = view.findViewById(R.id.imgCategory)
         val txtCategoryName: TextView = view.findViewById(R.id.txtCategoryName)
@@ -30,9 +31,12 @@ class CategoryAdapter(
 
     override fun onBindViewHolder(holder: CategoryViewHolder, position: Int) {
         val item = items[position]
+
+        // Nombre e imagen de categoría
         holder.txtCategoryName.text = item.title
         holder.imgCategory.setImageResource(item.imageResId)
 
+        // Navegación a ProductsActivity
         holder.itemView.setOnClickListener {
             val intent = Intent(context, ProductsActivity::class.java)
             intent.putExtra("categoryName", item.title)
@@ -41,4 +45,11 @@ class CategoryAdapter(
     }
 
     override fun getItemCount(): Int = items.size
+
+    // 🔥 Método para actualizar la lista mientras escribe en el buscador
+    fun actualizarLista(nuevaLista: List<CategoryItem>) {
+        items.clear()
+        items.addAll(nuevaLista)
+        notifyDataSetChanged()
+    }
 }
