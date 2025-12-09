@@ -52,4 +52,16 @@ dependencies {
     implementation("com.squareup.picasso:picasso:2.8")
     // 🟢 AGREGA ESTO:
     implementation("com.android.volley:volley:1.2.1")
+    // Google Maps
+    implementation("com.google.android.gms:play-services-maps:18.1.0")
+    implementation("com.google.android.gms:play-services-location:21.0.1")
+
+    // HTTP para llamar a Directions API
+    implementation("com.squareup.okhttp3:okhttp:4.12.0")
+
+    // Corrutinas
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3")
+
+    // Para usar lifecycleScope
+    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.8.0")
 }
