@@ -1,23 +1,23 @@
 plugins {
-    alias(libs.plugins.android.application)
-    alias(libs.plugins.kotlin.android)
+    id("com.android.application")
+    id("org.jetbrains.kotlin.android")
+    id("com.google.gms.google-services")
 }
 
 android {
     namespace = "com.example.pozoleria"
-    compileSdk = 36
+    compileSdk = 34
 
     defaultConfig {
         applicationId = "com.example.pozoleria"
-        minSdk = 35
-        targetSdk = 36
+        minSdk = 26   // 🔥 NECESARIO PARA adaptive-icon (ic_launcher)
+        targetSdk = 34
         versionCode = 1
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
-    // 👇 ESTA PARTE ES LA QUE HACE QUE SE GENERE 'ActivityMainBinding' y 'FormularioBinding'
     buildFeatures {
         viewBinding = true
     }
@@ -31,37 +31,52 @@ android {
             )
         }
     }
+
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
     }
+
     kotlinOptions {
         jvmTarget = "11"
     }
 }
 
 dependencies {
-    implementation(libs.androidx.core.ktx)
-    implementation(libs.androidx.appcompat)
-    implementation(libs.material)
-    implementation(libs.androidx.activity)
-    implementation(libs.androidx.constraintlayout)
-    implementation ("com.github.bumptech.glide:glide:4.16.0")
-    annotationProcessor ("com.github.bumptech.glide:compiler:4.16.0")
-    implementation("androidx.cardview:cardview:1.0.0")
+
+    // AndroidX
+    implementation("androidx.core:core-ktx:1.13.1")
+    implementation("androidx.appcompat:appcompat:1.7.0")
+    implementation("com.google.android.material:material:1.12.0")
+    implementation("androidx.activity:activity-ktx:1.9.0")
+    implementation("androidx.constraintlayout:constraintlayout:2.1.4")
+
+    // Glide
+    implementation("com.github.bumptech.glide:glide:4.16.0")
+    annotationProcessor("com.github.bumptech.glide:compiler:4.16.0")
+
+    // Picasso (por si lo sigues usando)
     implementation("com.squareup.picasso:picasso:2.8")
-    // 🟢 AGREGA ESTO:
+
+    // Volley
     implementation("com.android.volley:volley:1.2.1")
-    // Google Maps
+
+    // Google Maps + Location
     implementation("com.google.android.gms:play-services-maps:18.1.0")
     implementation("com.google.android.gms:play-services-location:21.0.1")
 
-    // HTTP para llamar a Directions API
+    // OKHTTP
     implementation("com.squareup.okhttp3:okhttp:4.12.0")
 
-    // Corrutinas
+    // Coroutines
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3")
 
-    // Para usar lifecycleScope
+    // Lifecycle
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.8.0")
+
+    // Firebase Auth
+    implementation("com.google.firebase:firebase-auth-ktx:22.3.1")
+
+    // Firebase Analytics
+    implementation("com.google.firebase:firebase-analytics-ktx:21.5.1")
 }

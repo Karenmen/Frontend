@@ -3,6 +3,7 @@ package com.example.pozoleria;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -10,7 +11,8 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.ViewPager2;
 
-import com.example.pozoleria.adapters.CategoryAdapter;
+import com.example.pozoleria.adapters.BannerAdapter;
+import com.example.pozoleria.adapters.HomeCategoryAdapter;
 import com.example.pozoleria.models.CategoryItem;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -21,6 +23,8 @@ public class HomeActivity extends AppCompatActivity {
 
     private ViewPager2 viewPagerBanners;
     private BottomNavigationView bottomNavigationView;
+    private RecyclerView recyclerCategoriasHome;
+    private TextView txtVerTodas;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,8 +33,10 @@ public class HomeActivity extends AppCompatActivity {
 
         viewPagerBanners = findViewById(R.id.viewPagerBanners);
         bottomNavigationView = findViewById(R.id.bottomNavigation);
+        recyclerCategoriasHome = findViewById(R.id.recyclerCategoriasHome);
+        txtVerTodas = findViewById(R.id.txtVerTodas);
 
-        // ---------- CARRUSEL ----------
+        // ---------- BANNERS ----------
         List<Integer> banners = new ArrayList<>();
         banners.add(R.drawable.promociones);
         banners.add(R.drawable.combos);
@@ -39,23 +45,21 @@ public class HomeActivity extends AppCompatActivity {
         viewPagerBanners.setAdapter(bannerAdapter);
 
         // ---------- CATEGORÍAS ----------
-        List<CategoryItem> categorias = new ArrayList<>();
+        List<CategoryItem> categoriasDestacadas = new ArrayList<>();
+        categoriasDestacadas.add(new CategoryItem("Pozole", R.drawable.pozole));
+        categoriasDestacadas.add(new CategoryItem("Hamburguesas", R.drawable.hamburguesa));
+        categoriasDestacadas.add(new CategoryItem("Postres", R.drawable.postres));
+        categoriasDestacadas.add(new CategoryItem("PlatillosMexicanos", R.drawable.refresco));
+        categoriasDestacadas.add(new CategoryItem("Bebidas", R.drawable.refresco));
+        categoriasDestacadas.add(new CategoryItem("HotDogs", R.drawable.desayunos));
 
-        // 🚨 Usa los nombres EXACTOS que están en MongoDB
-        categorias.add(new CategoryItem("Pozoles", R.drawable.pozole));
-        categorias.add(new CategoryItem("Tacos Dorados", R.drawable.tacos_dorados));
-        categorias.add(new CategoryItem("Postres", R.drawable.postres));
-        categorias.add(new CategoryItem("Bebidas", R.drawable.refresco));
-        categorias.add(new CategoryItem("Combos", R.drawable.combos));
-        categorias.add(new CategoryItem("Promociones", R.drawable.promociones));
+        HomeCategoryAdapter homeCategoryAdapter = new HomeCategoryAdapter(this, categoriasDestacadas);
 
-        CategoryAdapter categoryAdapter = new CategoryAdapter(this, categorias);
+        recyclerCategoriasHome.setLayoutManager(new GridLayoutManager(this, 2));
+        recyclerCategoriasHome.setAdapter(homeCategoryAdapter);
 
-        RecyclerView recyclerCategorias = findViewById(R.id.recyclerCategorias);
-        recyclerCategorias.setLayoutManager(new GridLayoutManager(this, 2));
-        recyclerCategorias.setAdapter(categoryAdapter);
+        txtVerTodas.setOnClickListener(v -> startActivity(new Intent(this, CategoryActivity.class)));
 
-        // ---------- BOTTOM NAV ----------
         bottomNavigationView.setOnItemSelectedListener(this::onNavigationItemSelected);
         bottomNavigationView.setSelectedItemId(R.id.nav_home);
     }

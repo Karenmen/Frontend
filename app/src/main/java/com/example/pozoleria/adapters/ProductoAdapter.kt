@@ -19,6 +19,9 @@ class ProductoAdapter(
     private val productos: MutableList<Producto>
 ) : RecyclerView.Adapter<ProductoAdapter.ProductoViewHolder>() {
 
+    // ⭐ URL FIJA DEL BACKEND
+    private val BASE_URL = "https://backend-pozoleria.onrender.com"
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ProductoViewHolder {
         val view = LayoutInflater.from(context).inflate(R.layout.item_producto, parent, false)
         return ProductoViewHolder(view)
@@ -30,12 +33,21 @@ class ProductoAdapter(
         holder.txtNombre.text = prod.nombre
         holder.txtPrecio.text = "$${prod.precio}"
 
-        if (prod.imagen.isNotEmpty()) {
-            Picasso.get().load(prod.imagen).into(holder.imgProducto)
+        val imageUrl = if (prod.imagen.isNotEmpty()) {
+            "$BASE_URL/imagenes/${prod.imagen}"
+        } else {
+            null
+        }
+
+        if (imageUrl != null) {
+            Picasso.get()
+                .load(imageUrl)
+                .placeholder(R.drawable.pozole)
+                .error(R.drawable.pozole)
+                .into(holder.imgProducto)
         } else {
             holder.imgProducto.setImageResource(R.drawable.pozole)
         }
-
 
         holder.btnAgregar.setOnClickListener {
             CartStorage.addItem(prod.nombre, prod.precio)
@@ -49,6 +61,6 @@ class ProductoAdapter(
         val txtNombre: TextView = view.findViewById(R.id.txtNombre)
         val txtPrecio: TextView = view.findViewById(R.id.txtPrecio)
         val imgProducto: ImageView = view.findViewById(R.id.imgProducto)
-        val btnAgregar: Button = view.findViewById(R.id.btnAgregar) // ⭐ IMPORTANTE
+        val btnAgregar: Button = view.findViewById(R.id.btnAgregar)
     }
 }

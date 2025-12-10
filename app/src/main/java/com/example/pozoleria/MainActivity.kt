@@ -2,88 +2,91 @@ package com.example.pozoleria
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
+import android.util.Patterns
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import com.android.volley.DefaultRetryPolicy
-import com.android.volley.Request
-import com.android.volley.toolbox.JsonObjectRequest
-import com.android.volley.toolbox.Volley
 import com.example.pozoleria.databinding.ActivityMainBinding
-import org.json.JSONObject
+import com.google.firebase.auth.FirebaseAuth
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
+    private lateinit var auth: FirebaseAuth
+    private lateinit var session: SessionManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        // 🟠 Botón de inicio de sesión
+        auth = FirebaseAuth.getInstance()
+        session = SessionManager(this)
+
+        // Si ya está logeado → saltar login
+        if (session.isLoggedIn()) {
+            startActivity(Intent(this, HomeActivity::class.java))
+            finish()
+            return
+        }
+
+        // BOTÓN LOGIN
         binding.btnLogin.setOnClickListener {
             val email = binding.edtEmail.text.toString().trim()
             val password = binding.edtPassword.text.toString().trim()
 
-            if (email.isEmpty() || password.isEmpty()) {
-                Toast.makeText(this, "Completa todos los campos", Toast.LENGTH_SHORT).show()
-                return@setOnClickListener
-            }
+            if (!validarCampos(email, password)) return@setOnClickListener
 
-            iniciarSesion(email, password)
+            iniciarSesionFirebase(email, password)
         }
 
-        // 🟢 Enlace a registro
+        // Enlace registrar
         binding.txtRegistrar.setOnClickListener {
             startActivity(Intent(this, RegisterActivity::class.java))
         }
     }
 
-    // 🔹 Función para iniciar sesión
-    private fun iniciarSesion(email: String, password: String) {
-        val url = "http://10.0.2.2:3000/api/usuarios/login"
-
-        val params = JSONObject().apply {
-            put("correo", email)
-            put("password", password)
+    private fun validarCampos(email: String, password: String): Boolean {
+        if (email.isEmpty() || !Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+            Toast.makeText(this, "Ingresa un correo válido", Toast.LENGTH_SHORT).show()
+            return false
         }
+        if (password.isEmpty()) {
+            Toast.makeText(this, "Ingresa una contraseña", Toast.LENGTH_SHORT).show()
+            return false
+        }
+        return true
+    }
 
-        val request = object : JsonObjectRequest(
-            Request.Method.POST, url, params,
-            { response ->
-                val mensaje = response.optString("message", "Inicio de sesión exitoso ✅")
-                Toast.makeText(this, mensaje, Toast.LENGTH_SHORT).show()
+    // 🔥 FUNCIÓN DE LOGIN CON FIREBASE + VERIFICACIÓN DE EMAIL
+    private fun iniciarSesionFirebase(email: String, password: String) {
 
-                // ⬅️ ESTA ES LA ÚNICA LÍNEA IMPORTANTE
-                // AHORA TE MANDA A HomeActivity (la del ZIP)
-                val intent = Intent(this, HomeActivity::class.java)
-                startActivity(intent)
-                finish()
-            },
-            { error ->
-                val code = error.networkResponse?.statusCode
-                val body = error.networkResponse?.data?.toString(Charsets.UTF_8)
-                val mensaje = when {
-                    code != null -> "Error HTTP $code: $body"
-                    else -> "❌ No se pudo conectar con el servidor"
+        auth.signInWithEmailAndPassword(email, password)
+            .addOnSuccessListener {
+
+                val user = auth.currentUser
+
+                if (user != null && user.isEmailVerified) {
+
+                    // Guardar sesión local
+                    session.saveSession(email, user.uid)
+
+                    Toast.makeText(this, "Bienvenido $email 👋", Toast.LENGTH_SHORT).show()
+                    startActivity(Intent(this, HomeActivity::class.java))
+                    finish()
+
+                } else {
+
+                    Toast.makeText(
+                        this,
+                        "Debes verificar tu correo antes de iniciar sesión.",
+                        Toast.LENGTH_LONG
+                    ).show()
+
+                    FirebaseAuth.getInstance().signOut()
                 }
-                Toast.makeText(this, mensaje, Toast.LENGTH_LONG).show()
-                Log.e("VOLLEY_ERROR", mensaje)
             }
-        ) {
-            override fun getHeaders(): MutableMap<String, String> {
-                return hashMapOf("Content-Type" to "application/json; charset=utf-8")
+            .addOnFailureListener {
+                Toast.makeText(this, "Correo o contraseña incorrectos ❌", Toast.LENGTH_SHORT).show()
             }
-        }
-
-        // ⏱ Política de reintento
-        request.retryPolicy = DefaultRetryPolicy(
-            8000,
-            DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
-            DefaultRetryPolicy.DEFAULT_BACKOFF_MULT
-        )
-
-        Volley.newRequestQueue(this).add(request)
     }
 }

@@ -8,6 +8,7 @@ import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.example.pozoleria.CartActivity;
 import com.example.pozoleria.R;
 import com.example.pozoleria.models.CartItem;
 
@@ -19,17 +20,6 @@ public class CartListAdapter extends BaseAdapter {
     private Context context;
     private List<CartItem> items;
     private LayoutInflater inflater;
-
-
-    public interface OnCartChangeListener {
-        void onCartUpdated();
-    }
-
-    private OnCartChangeListener listener;
-
-    public void setOnCartChangeListener(OnCartChangeListener listener) {
-        this.listener = listener;
-    }
 
     public CartListAdapter(Context context, List<CartItem> items) {
         this.context = context;
@@ -65,47 +55,42 @@ public class CartListAdapter extends BaseAdapter {
         TextView name = view.findViewById(R.id.txtCartName);
         TextView quantity = view.findViewById(R.id.txtCartQuantity);
         TextView price = view.findViewById(R.id.txtCartPrice);
-        TextView total = view.findViewById(R.id.txtTotal);
 
         Button btnMinus = view.findViewById(R.id.btnMinus);
         Button btnPlus = view.findViewById(R.id.btnPlus);
 
-        // DATOS INICIALES
+        // Mostrar datos
         name.setText(item.getName());
         quantity.setText(String.valueOf(item.getQuantity()));
         price.setText(String.format(Locale.getDefault(), "$%.2f", item.getPrice()));
 
-        // TOTAL INDIVIDUAL
-        double totalProducto = item.getPrice() * item.getQuantity();
-        total.setText(String.format(Locale.getDefault(), "Total: $%.2f", totalProducto));
-
-
+        // Aumentar cantidad
         btnPlus.setOnClickListener(v -> {
             item.setQuantity(item.getQuantity() + 1);
             quantity.setText(String.valueOf(item.getQuantity()));
-
-            double nuevoTotal = item.getPrice() * item.getQuantity();
-            total.setText(String.format(Locale.getDefault(), "Total: $%.2f", nuevoTotal));
-
             notifyDataSetChanged();
-
-            if (listener != null) listener.onCartUpdated();
+            updateTotal();
         });
 
+        // Disminuir cantidad (mínimo 1)
         btnMinus.setOnClickListener(v -> {
             if (item.getQuantity() > 1) {
                 item.setQuantity(item.getQuantity() - 1);
                 quantity.setText(String.valueOf(item.getQuantity()));
-
-                double nuevoTotal = item.getPrice() * item.getQuantity();
-                total.setText(String.format(Locale.getDefault(), "Total: $%.2f", nuevoTotal));
-
                 notifyDataSetChanged();
-
-                if (listener != null) listener.onCartUpdated();
+                updateTotal();
             }
         });
 
         return view;
+    }
+
+    // ------------------------------
+    // Manda llamar updateTotal() en CartActivity
+    // ------------------------------
+    private void updateTotal() {
+        if (context instanceof CartActivity) {
+            ((CartActivity) context).updateTotal();
+        }
     }
 }

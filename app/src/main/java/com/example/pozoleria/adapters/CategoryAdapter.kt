@@ -14,42 +14,36 @@ import com.example.pozoleria.models.CategoryItem
 
 class CategoryAdapter(
     private val context: Context,
-    private var items: MutableList<CategoryItem>
-) : RecyclerView.Adapter<CategoryAdapter.CategoryViewHolder>() {
+    private val categorias: List<CategoryItem>
+) : RecyclerView.Adapter<CategoryAdapter.ViewHolder>() {
 
-    // ViewHolder para cada tarjeta
-    class CategoryViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+    inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val imgCategory: ImageView = view.findViewById(R.id.imgCategory)
         val txtCategoryName: TextView = view.findViewById(R.id.txtCategoryName)
+        val txtSub: TextView = view.findViewById(R.id.txtSub)
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CategoryViewHolder {
-        val view = LayoutInflater.from(parent.context)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+        val vista = LayoutInflater.from(context)
             .inflate(R.layout.item_category, parent, false)
-        return CategoryViewHolder(view)
+        return ViewHolder(vista)
     }
 
-    override fun onBindViewHolder(holder: CategoryViewHolder, position: Int) {
-        val item = items[position]
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+        val item = categorias[position]
 
-        // Nombre e imagen de categoría
-        holder.txtCategoryName.text = item.title
-        holder.imgCategory.setImageResource(item.imageResId)
+        holder.txtCategoryName.text = item.nombre
+        holder.imgCategory.setImageResource(item.imagen)
 
-        // Navegación a ProductsActivity
         holder.itemView.setOnClickListener {
+            val categoriaFinal = item.nombre.replace(" ", "") // SIN ESPACIOS
+
             val intent = Intent(context, ProductsActivity::class.java)
-            intent.putExtra("categoryName", item.title)
+            intent.putExtra("categoryName", categoriaFinal)
+
             context.startActivity(intent)
         }
     }
 
-    override fun getItemCount(): Int = items.size
-
-    // 🔥 Método para actualizar la lista mientras escribe en el buscador
-    fun actualizarLista(nuevaLista: List<CategoryItem>) {
-        items.clear()
-        items.addAll(nuevaLista)
-        notifyDataSetChanged()
-    }
+    override fun getItemCount(): Int = categorias.size
 }

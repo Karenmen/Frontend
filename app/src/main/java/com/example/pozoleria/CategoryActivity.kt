@@ -17,16 +17,17 @@ class CategoryActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_categories)
 
-        recyclerView = findViewById(R.id.recyclerCategories)
+        recyclerView = findViewById(R.id.recyclerCategorias)
         recyclerView.layoutManager = LinearLayoutManager(this)
 
+        // 🔥 CATEGORÍAS EXACTAMENTE COMO EN TU BACKEND/MONGO
         categorias = mutableListOf(
-            CategoryItem("Pozoles", R.drawable.pozole),
+            CategoryItem("Pozole", R.drawable.pozole),
             CategoryItem("Hamburguesas", R.drawable.hamburguesa),
             CategoryItem("Postres", R.drawable.postres),
-            CategoryItem("Platillos Mexicanos", R.drawable.refresco),
+            CategoryItem("PlatillosMexicanos", R.drawable.refresco),
             CategoryItem("Bebidas", R.drawable.bebidas),
-            CategoryItem("Hot Dogs", R.drawable.desayunos)
+            CategoryItem("HotDogs", R.drawable.desayunos)
         )
 
         categoryAdapter = CategoryAdapter(this, categorias)

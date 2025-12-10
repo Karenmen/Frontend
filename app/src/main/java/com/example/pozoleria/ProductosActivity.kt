@@ -20,6 +20,9 @@ class ProductsActivity : AppCompatActivity() {
     private lateinit var adapter: ProductoAdapter
     private var productList = mutableListOf<Producto>()
 
+    // ⭐ URL FIJA DEL BACKEND EN RENDER (ESTA NUNCA CAMBIA)
+    private val BASE_URL = "https://backend-pozoleria.onrender.com"
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_products)
@@ -31,19 +34,22 @@ class ProductsActivity : AppCompatActivity() {
         recycler.adapter = adapter
 
         val categoria = intent.getStringExtra("categoryName")
+
         if (categoria == null) {
             Toast.makeText(this, "No se recibió categoría", Toast.LENGTH_SHORT).show()
             return
         }
-
-        Log.d("ProductsActivity", "Categoría recibida: $categoria")
 
         cargarProductos(categoria)
     }
 
     private fun cargarProductos(categoria: String) {
 
-        val url = "http://10.0.2.2:3000/api/productos/categoria/$categoria"
+        val categoriaCodificada =
+            URLEncoder.encode(categoria, StandardCharsets.UTF_8.toString())
+
+        val url = "$BASE_URL/api/productos/categoria/$categoriaCodificada"
+
         Log.d("ProductsActivity", "URL: $url")
 
         val request = JsonArrayRequest(
@@ -51,9 +57,12 @@ class ProductsActivity : AppCompatActivity() {
             url,
             null,
             { response ->
+
                 productList.clear()
+
                 for (i in 0 until response.length()) {
                     val obj = response.getJSONObject(i)
+
                     val producto = Producto(
                         _id = obj.getString("_id"),
                         nombre = obj.getString("nombre"),
@@ -61,19 +70,18 @@ class ProductsActivity : AppCompatActivity() {
                         categoria = obj.getString("categoria"),
                         imagen = obj.optString("imagen", "")
                     )
+
                     productList.add(producto)
                 }
+
                 adapter.notifyDataSetChanged()
-                Toast.makeText(this, "Productos cargados: ${productList.size}", Toast.LENGTH_SHORT).show()
-                Log.d("ProductsActivity", "Productos cargados: ${productList.size}")
             },
             { error ->
                 Toast.makeText(this, "Error al cargar productos", Toast.LENGTH_SHORT).show()
-                Log.e("ProductsActivity", "Error: ${error.message}")
+                Log.e("ProductsActivity", "Volley Error → ${error.message}")
             }
         )
 
         Volley.newRequestQueue(this).add(request)
     }
-
 }

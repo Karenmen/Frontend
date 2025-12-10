@@ -3,72 +3,77 @@
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="8dp"
-    card_view:cardCornerRadius="16dp"
-    card_view:cardElevation="6dp">
+    android:layout_margin="10dp"
+    card_view:cardCornerRadius="18dp"
+    card_view:cardElevation="8dp"
+    card_view:cardUseCompatPadding="true">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
+        android:minHeight="120dp"
         android:padding="12dp">
 
+        <!-- Imagen del producto -->
         <ImageView
             android:id="@+id/imgProducto"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:adjustViewBounds="true"
+            android:layout_width="110dp"
+            android:layout_height="110dp"
             android:scaleType="centerCrop"
-            android:src="@drawable/pozole" />
+            android:background="@drawable/rounded_image"
+            android:contentDescription="Imagen del producto" />
 
+        <!-- CONTENEDOR DE TEXTO -->
         <LinearLayout
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_weight="1"
             android:orientation="vertical"
-            android:gravity="center_vertical"
-            android:paddingStart="12dp">
+            android:paddingStart="14dp">
 
+            <!-- Nombre -->
             <TextView
                 android:id="@+id/txtNombre"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Nombre del producto"
-                android:textStyle="bold"
                 android:textSize="18sp"
-                android:textColor="#000000" />
+                android:textStyle="bold"
+                android:textColor="#222222" />
 
+            <!-- Descripción -->
             <TextView
                 android:id="@+id/txtDescripcion"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Descripción del producto"
                 android:textSize="14sp"
-                android:textColor="#555555"
+                android:textColor="#666666"
                 android:paddingTop="4dp" />
 
+            <!-- Precio -->
             <TextView
                 android:id="@+id/txtPrecio"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="$ 0.00"
                 android:textSize="16sp"
-                android:textColor="#009688"
+                android:textColor="#1B5E20"
                 android:textStyle="bold"
                 android:paddingTop="6dp" />
 
-            <!--BOTÓN PARA AGREGAR AL CARRITO-->
+            <!-- BOTÓN AÑADIR -->
             <Button
                 android:id="@+id/btnAgregar"
-                android:layout_width="wrap_content"
-                android:layout_height="35dp"
+                android:layout_width="110dp"
+                android:layout_height="40dp"
+                android:layout_marginTop="10dp"
                 android:text="Añadir"
+                android:textAllCaps="false"
                 android:textColor="@android:color/white"
-                android:layout_marginTop="8dp"
-                android:paddingStart="16dp"
-                android:paddingEnd="16dp"
-                android:textAllCaps="false" />
-
+                android:background="@drawable/btn_agregar_bg"
+                android:elevation="3dp" />
         </LinearLayout>
     </LinearLayout>
 
