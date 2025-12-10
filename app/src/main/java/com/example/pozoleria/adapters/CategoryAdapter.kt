@@ -32,15 +32,15 @@ class CategoryAdapter(
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = categorias[position]
 
-        holder.txtCategoryName.text = item.nombre
-        holder.imgCategory.setImageResource(item.imagen)
+        // ⭕ CAMBIAMOS A LOS NOMBRES CORRECTOS
+        holder.txtCategoryName.text = item.title
+        holder.imgCategory.setImageResource(item.imageResId)
 
         holder.itemView.setOnClickListener {
-            val categoriaFinal = item.nombre.replace(" ", "") // SIN ESPACIOS
+            val categoriaFinal = item.title.replace(" ", "")
 
             val intent = Intent(context, ProductsActivity::class.java)
             intent.putExtra("categoryName", categoriaFinal)
-
             context.startActivity(intent)
         }
     }

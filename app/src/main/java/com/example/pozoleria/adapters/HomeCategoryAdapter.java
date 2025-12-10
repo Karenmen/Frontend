@@ -17,8 +17,8 @@ import java.util.List;
 
 public class HomeCategoryAdapter extends RecyclerView.Adapter<HomeCategoryAdapter.ViewHolder> {
 
-    private Context context;
-    private List<CategoryItem> lista;
+    private final Context context;
+    private final List<CategoryItem> lista;
 
     public HomeCategoryAdapter(Context context, List<CategoryItem> lista) {
         this.context = context;
@@ -50,8 +50,9 @@ public class HomeCategoryAdapter extends RecyclerView.Adapter<HomeCategoryAdapte
     public void onBindViewHolder(@NonNull HomeCategoryAdapter.ViewHolder holder, int position) {
         CategoryItem item = lista.get(position);
 
-        holder.txtCategoryHomeName.setText(item.getNombre());
-        holder.imgCategoryHome.setImageResource(item.getImagen()); // ← CORREGIDO
+        // 🔥 CAMBIADO — AHORA USAMOS LOS NOMBRES CORRECTOS DEL DATA CLASS
+        holder.txtCategoryHomeName.setText(item.getTitle());
+        holder.imgCategoryHome.setImageResource(item.getImageResId());
     }
 
     @Override
