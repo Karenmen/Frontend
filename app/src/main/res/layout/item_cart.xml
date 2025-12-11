@@ -59,6 +59,15 @@
                 android:textStyle="bold"
                 android:layout_marginHorizontal="16dp" />
 
+            <Button
+                android:id="@+id/btnDelete"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:text="X"
+                android:backgroundTint="#D9534F"
+                android:textColor="#FFFFFF"/>
+
+
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnPlus"
                 android:layout_width="40dp"

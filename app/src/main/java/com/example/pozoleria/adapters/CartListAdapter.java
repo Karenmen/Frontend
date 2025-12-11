@@ -8,9 +8,10 @@ import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.example.pozoleria.CartActivity;
 import com.example.pozoleria.R;
 import com.example.pozoleria.models.CartItem;
+import com.example.pozoleria.models.CartStorage;
+import com.example.pozoleria.CartActivity; // IMPORTANTE
 
 import java.util.List;
 import java.util.Locale;
@@ -55,40 +56,49 @@ public class CartListAdapter extends BaseAdapter {
         TextView name = view.findViewById(R.id.txtCartName);
         TextView quantity = view.findViewById(R.id.txtCartQuantity);
         TextView price = view.findViewById(R.id.txtCartPrice);
-
+        TextView total = view.findViewById(R.id.txtTotal);
         Button btnMinus = view.findViewById(R.id.btnMinus);
         Button btnPlus = view.findViewById(R.id.btnPlus);
+        Button btnDelete = view.findViewById(R.id.btnDelete); // NUEVO
 
-        // Mostrar datos
+        // DATOS
         name.setText(item.getName());
         quantity.setText(String.valueOf(item.getQuantity()));
         price.setText(String.format(Locale.getDefault(), "$%.2f", item.getPrice()));
 
-        // Aumentar cantidad
+        double totalProducto = item.getPrice() * item.getQuantity();
+        total.setText(String.format(Locale.getDefault(), "Total: $%.2f", totalProducto));
+
+        // ➕ BOTÓN SUMAR
         btnPlus.setOnClickListener(v -> {
             item.setQuantity(item.getQuantity() + 1);
-            quantity.setText(String.valueOf(item.getQuantity()));
             notifyDataSetChanged();
-            updateTotal();
+            updateTotalGeneral();
         });
 
-        // Disminuir cantidad (mínimo 1)
+        // ➖ BOTÓN RESTAR
         btnMinus.setOnClickListener(v -> {
             if (item.getQuantity() > 1) {
                 item.setQuantity(item.getQuantity() - 1);
-                quantity.setText(String.valueOf(item.getQuantity()));
-                notifyDataSetChanged();
-                updateTotal();
+            } else {
+                items.remove(item);
             }
+            notifyDataSetChanged();
+            updateTotalGeneral();
+        });
+
+        // ❌ BOTÓN ELIMINAR
+        btnDelete.setOnClickListener(v -> {
+            items.remove(item);
+            CartStorage.INSTANCE.getItems().remove(item);
+            notifyDataSetChanged();
+            updateTotalGeneral();
         });
 
         return view;
     }
 
-    // ------------------------------
-    // Manda llamar updateTotal() en CartActivity
-    // ------------------------------
-    private void updateTotal() {
+    private void updateTotalGeneral() {
         if (context instanceof CartActivity) {
             ((CartActivity) context).updateTotal();
         }
