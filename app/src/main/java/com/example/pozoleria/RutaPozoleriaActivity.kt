@@ -5,7 +5,6 @@ import android.content.pm.PackageManager
 import android.location.Location
 import android.os.Bundle
 import android.os.Looper
-import android.widget.Button
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
@@ -33,17 +32,15 @@ class RutaPozoleriaActivity : AppCompatActivity(), OnMapReadyCallback {
     private var lastLocation: Location? = null
 
     private var rutaPolyline: Polyline? = null
-    private var modoActual: String = "driving" // driving | walking | transit
 
     private lateinit var txtTiempo: TextView
     private lateinit var txtDistancia: TextView
 
-    // Coordenadas fijas de la pozolería
     private val destinoPozoleria = LatLng(19.2709726, -98.8949347)
 
     companion object {
         private const val REQUEST_LOCATION = 1001
-        private const val DIRECTIONS_API_KEY = "AIzaSyBOWahxcpmHi_ncArUsntIfKs-1c18q3aM" // <- opcionalmente puedes usar la misma del manifest
+        private const val DIRECTIONS_API_KEY = "AIzaSyBOWahxcpmHi_ncArUsntIfKs-1c18q3aM"
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -52,25 +49,6 @@ class RutaPozoleriaActivity : AppCompatActivity(), OnMapReadyCallback {
 
         txtTiempo = findViewById(R.id.txtTiempo)
         txtDistancia = findViewById(R.id.txtDistancia)
-
-        val btnAuto: Button = findViewById(R.id.btnAuto)
-        val btnCaminando: Button = findViewById(R.id.btnCaminando)
-        val btnTransporte: Button = findViewById(R.id.btnTransporte)
-
-        btnAuto.setOnClickListener {
-            modoActual = "driving"
-            recalcularRutaSiHayUbicacion()
-        }
-
-        btnCaminando.setOnClickListener {
-            modoActual = "walking"
-            recalcularRutaSiHayUbicacion()
-        }
-
-        btnTransporte.setOnClickListener {
-            modoActual = "transit"
-            recalcularRutaSiHayUbicacion()
-        }
 
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
 
@@ -85,31 +63,31 @@ class RutaPozoleriaActivity : AppCompatActivity(), OnMapReadyCallback {
         mMap.uiSettings.isZoomControlsEnabled = true
         mMap.uiSettings.isMyLocationButtonEnabled = true
 
-        // Marcador de la pozolería
+        // 🚦 Tráfico en tiempo real
+        mMap.isTrafficEnabled = true
+
+        // Marcador de destino
         mMap.addMarker(
             MarkerOptions()
                 .position(destinoPozoleria)
-                .title("Pozolería")
+                .title("Pozolería La Carpita")
         )
 
         verificarPermisosUbicacion()
     }
 
     private fun verificarPermisosUbicacion() {
-        val permisoFine = ContextCompat.checkSelfPermission(
-            this,
-            Manifest.permission.ACCESS_FINE_LOCATION
-        )
-
-        if (permisoFine != PackageManager.PERMISSION_GRANTED) {
+        if (ContextCompat.checkSelfPermission(
+                this,
+                Manifest.permission.ACCESS_FINE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
             ActivityCompat.requestPermissions(
                 this,
                 arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
                 REQUEST_LOCATION
             )
-        } else {
-            iniciarActualizacionesUbicacion()
-        }
+        } else iniciarUbicacion()
     }
 
     override fun onRequestPermissionsResult(
@@ -122,12 +100,10 @@ class RutaPozoleriaActivity : AppCompatActivity(), OnMapReadyCallback {
         if (requestCode == REQUEST_LOCATION &&
             grantResults.isNotEmpty() &&
             grantResults[0] == PackageManager.PERMISSION_GRANTED
-        ) {
-            iniciarActualizacionesUbicacion()
-        }
+        ) iniciarUbicacion()
     }
 
-    private fun iniciarActualizacionesUbicacion() {
+    private fun iniciarUbicacion() {
         if (ActivityCompat.checkSelfPermission(
                 this,
                 Manifest.permission.ACCESS_FINE_LOCATION
@@ -137,8 +113,8 @@ class RutaPozoleriaActivity : AppCompatActivity(), OnMapReadyCallback {
         mMap.isMyLocationEnabled = true
 
         val locationRequest = LocationRequest.create().apply {
-            interval = 5000           // cada 5 segundos
-            fastestInterval = 2000    // mínimo 2 segundos
+            interval = 5000
+            fastestInterval = 2000
             priority = Priority.PRIORITY_HIGH_ACCURACY
         }
 
@@ -149,62 +125,61 @@ class RutaPozoleriaActivity : AppCompatActivity(), OnMapReadyCallback {
 
                 val origen = LatLng(location.latitude, location.longitude)
 
-                // Cámara siguiendo al usuario (tipo Waze/Google Maps)
-                mMap.animateCamera(
-                    CameraUpdateFactory.newLatLngZoom(origen, 15f)
-                )
+                // Mover cámara
+                mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(origen, 16f))
 
-                // Calcular ruta en cada actualización (puedes optimizar más adelante)
-                solicitarRuta(origen, destinoPozoleria, modoActual)
+                // Pedir ruta
+                solicitarRuta(origen)
             }
         }
 
         fusedLocationClient.requestLocationUpdates(
             locationRequest,
-            locationCallback as LocationCallback,
+            locationCallback!!,
             Looper.getMainLooper()
         )
     }
 
-    private fun recalcularRutaSiHayUbicacion() {
-        val loc = lastLocation ?: return
-        val origen = LatLng(loc.latitude, loc.longitude)
-        solicitarRuta(origen, destinoPozoleria, modoActual)
-    }
+    private fun solicitarRuta(origen: LatLng) {
 
-    private fun solicitarRuta(origen: LatLng, destino: LatLng, mode: String) {
-        val url = buildDirectionsUrl(origen, destino, mode)
+        val url =
+            "https://maps.googleapis.com/maps/api/directions/json?" +
+                    "origin=${origen.latitude},${origen.longitude}" +
+                    "&destination=${destinoPozoleria.latitude},${destinoPozoleria.longitude}" +
+                    "&mode=driving" +
+                    "&departure_time=now" +   // tráfico en tiempo real
+                    "&key=$DIRECTIONS_API_KEY"
 
         lifecycleScope.launch(Dispatchers.IO) {
             try {
                 val client = OkHttpClient()
-                val request = Request.Builder()
-                    .url(url)
-                    .build()
-
+                val request = Request.Builder().url(url).build()
                 val response = client.newCall(request).execute()
                 val body = response.body?.string() ?: return@launch
 
                 val json = JSONObject(body)
                 val status = json.optString("status")
+
+
+                println("DIRECTIONS STATUS: $status")
+                println("DIRECTIONS JSON: $body")
+
                 if (status != "OK") return@launch
 
-                val routes = json.getJSONArray("routes")
-                if (routes.length() == 0) return@launch
+                val route = json.getJSONArray("routes").getJSONObject(0)
+                val polyString = route.getJSONObject("overview_polyline").getString("points")
+                val points = decodePolyline(polyString)
 
-                val route = routes.getJSONObject(0)
-                val overviewPolyline =
-                    route.getJSONObject("overview_polyline").getString("points")
+                val leg = route.getJSONArray("legs").getJSONObject(0)
 
-                val legs = route.getJSONArray("legs")
-                val leg = legs.getJSONObject(0)
-                val distanceText = leg.getJSONObject("distance").getString("text")
-                val durationText = leg.getJSONObject("duration").getString("text")
+                val distance = leg.getJSONObject("distance").getString("text")
 
-                val points = decodePolyline(overviewPolyline)
+                // 📌 duration_in_traffic NO siempre viene -> evitamos fallos
+                val duration = leg.optJSONObject("duration_in_traffic")?.getString("text")
+                    ?: leg.getJSONObject("duration").getString("text")
 
                 withContext(Dispatchers.Main) {
-                    actualizarRutaEnMapa(points, distanceText, durationText)
+                    actualizarRuta(points, distance, duration)
                 }
 
             } catch (e: Exception) {
@@ -213,45 +188,29 @@ class RutaPozoleriaActivity : AppCompatActivity(), OnMapReadyCallback {
         }
     }
 
-    private fun buildDirectionsUrl(origen: LatLng, destino: LatLng, mode: String): String {
-        val originParam = "${origen.latitude},${origen.longitude}"
-        val destParam = "${destino.latitude},${destino.longitude}"
 
-        return "https://maps.googleapis.com/maps/api/directions/json" +
-                "?origin=$originParam" +
-                "&destination=$destParam" +
-                "&mode=$mode" +
-                "&key=$DIRECTIONS_API_KEY"
-    }
-
-    private fun actualizarRutaEnMapa(
-        puntos: List<LatLng>,
-        distance: String,
-        duration: String
-    ) {
-        // Borrar ruta anterior
+    private fun actualizarRuta(puntos: List<LatLng>, distance: String, duration: String) {
         rutaPolyline?.remove()
 
         rutaPolyline = mMap.addPolyline(
             PolylineOptions()
                 .addAll(puntos)
-                .width(12f)
-                .color(Color.BLUE)
+                .width(16f)
+                .color(Color.parseColor("#E27914")) // naranja
+                .geodesic(true)
         )
 
-        txtTiempo.text = "Tiempo aprox: $duration"
+        txtTiempo.text = "Tiempo aprox (con tráfico): $duration"
         txtDistancia.text = "Distancia: $distance"
     }
 
-    // Decodificar polyline (formato de Google Directions)
     private fun decodePolyline(encoded: String): List<LatLng> {
         val poly = ArrayList<LatLng>()
         var index = 0
-        val len = encoded.length
         var lat = 0
         var lng = 0
 
-        while (index < len) {
+        while (index < encoded.length) {
             var b: Int
             var shift = 0
             var result = 0
@@ -260,7 +219,8 @@ class RutaPozoleriaActivity : AppCompatActivity(), OnMapReadyCallback {
                 result = result or ((b and 0x1f) shl shift)
                 shift += 5
             } while (b >= 0x20)
-            val dlat = if ((result and 1) != 0) (result shr 1).inv() else (result shr 1)
+
+            val dlat = if (result and 1 != 0) (result shr 1).inv() else (result shr 1)
             lat += dlat
 
             shift = 0
@@ -270,14 +230,11 @@ class RutaPozoleriaActivity : AppCompatActivity(), OnMapReadyCallback {
                 result = result or ((b and 0x1f) shl shift)
                 shift += 5
             } while (b >= 0x20)
-            val dlng = if ((result and 1) != 0) (result shr 1).inv() else (result shr 1)
+
+            val dlng = if (result and 1 != 0) (result shr 1).inv() else (result shr 1)
             lng += dlng
 
-            val latLng = LatLng(
-                lat.toDouble() / 1E5,
-                lng.toDouble() / 1E5
-            )
-            poly.add(latLng)
+            poly.add(LatLng(lat / 1E5, lng / 1E5))
         }
 
         return poly

@@ -3,6 +3,7 @@ package com.example.pozoleria;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -23,6 +24,8 @@ public class HomeActivity extends AppCompatActivity {
     private RecyclerView recyclerCategoriasHome;
     private TextView txtVerTodas;
 
+    private Button btnComoLlegar;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -31,6 +34,7 @@ public class HomeActivity extends AppCompatActivity {
         bottomNavigationView = findViewById(R.id.bottomNavigation);
         recyclerCategoriasHome = findViewById(R.id.recyclerCategoriasHome);
         txtVerTodas = findViewById(R.id.txtVerTodas);
+        btnComoLlegar = findViewById(R.id.btnComoLlegar);
 
         // ---------- CATEGORÍAS ----------
         List<CategoryItem> categoriasDestacadas = new ArrayList<>();
@@ -47,6 +51,11 @@ public class HomeActivity extends AppCompatActivity {
         recyclerCategoriasHome.setAdapter(homeCategoryAdapter);
 
         txtVerTodas.setOnClickListener(v -> startActivity(new Intent(this, CategoryActivity.class)));
+
+        btnComoLlegar.setOnClickListener(v -> {
+            Intent intent = new Intent(HomeActivity.this, RutaPozoleriaActivity.class);
+            startActivity(intent);
+        });
 
         bottomNavigationView.setOnItemSelectedListener(this::onNavigationItemSelected);
         bottomNavigationView.setSelectedItemId(R.id.nav_home);

@@ -6,11 +6,11 @@ plugins {
 
 android {
     namespace = "com.example.pozoleria"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         applicationId = "com.example.pozoleria"
-        minSdk = 26   // 🔥 NECESARIO PARA adaptive-icon (ic_launcher)
+        minSdk = 35   // 🔥 NECESARIO PARA adaptive-icon (ic_launcher)
         targetSdk = 34
         versionCode = 1
         versionName = "1.0"
