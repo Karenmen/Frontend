@@ -9,9 +9,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.viewpager2.widget.ViewPager2;
 
-import com.example.pozoleria.adapters.BannerAdapter;
 import com.example.pozoleria.adapters.HomeCategoryAdapter;
 import com.example.pozoleria.models.CategoryItem;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -21,7 +19,6 @@ import java.util.List;
 
 public class HomeActivity extends AppCompatActivity {
 
-    private ViewPager2 viewPagerBanners;
     private BottomNavigationView bottomNavigationView;
     private RecyclerView recyclerCategoriasHome;
     private TextView txtVerTodas;
@@ -31,18 +28,9 @@ public class HomeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
-        viewPagerBanners = findViewById(R.id.viewPagerBanners);
         bottomNavigationView = findViewById(R.id.bottomNavigation);
         recyclerCategoriasHome = findViewById(R.id.recyclerCategoriasHome);
         txtVerTodas = findViewById(R.id.txtVerTodas);
-
-        // ---------- BANNERS ----------
-        List<Integer> banners = new ArrayList<>();
-        banners.add(R.drawable.promociones);
-        banners.add(R.drawable.combos);
-
-        BannerAdapter bannerAdapter = new BannerAdapter(banners);
-        viewPagerBanners.setAdapter(bannerAdapter);
 
         // ---------- CATEGORÍAS ----------
         List<CategoryItem> categoriasDestacadas = new ArrayList<>();
