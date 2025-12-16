@@ -24,7 +24,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Proceder al pago"
-        android:background="#D9681D"
+        android:background="#3A1902"
         android:textColor="#FFFFFF" />
 
     <TextView
