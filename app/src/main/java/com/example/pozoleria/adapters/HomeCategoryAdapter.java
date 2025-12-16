@@ -15,18 +15,23 @@ import com.example.pozoleria.models.CategoryItem;
 
 import java.util.List;
 
-public class HomeCategoryAdapter extends RecyclerView.Adapter<HomeCategoryAdapter.ViewHolder> {
+public class HomeCategoryAdapter
+        extends RecyclerView.Adapter<HomeCategoryAdapter.ViewHolder> {
 
     private final Context context;
     private final List<CategoryItem> lista;
     private final OnCategoryClickListener listener;
 
-    // 🔹 Interfaz
-    public interface OnCategoryClickListener {
-        void onCategoryClick(CategoryItem category);
+    // 🔹 Constructor SIMPLE (el que usas desde HomeActivity)
+    public HomeCategoryAdapter(Context context, List<CategoryItem> lista) {
+        this.context = context;
+        this.lista = lista;
+        this.listener = category -> {
+            // acción por defecto (no hace nada)
+        };
     }
 
-    // 🔹 Constructor actualizado
+    // 🔹 Constructor COMPLETO (opcional, con click)
     public HomeCategoryAdapter(Context context,
                                List<CategoryItem> lista,
                                OnCategoryClickListener listener) {
@@ -35,6 +40,13 @@ public class HomeCategoryAdapter extends RecyclerView.Adapter<HomeCategoryAdapte
         this.listener = listener;
     }
 
+    // 🔹 Interfaz de click
+    public interface OnCategoryClickListener {
+        void onCategoryClick(CategoryItem category);
+    }
+
+    // ================= ViewHolder =================
+
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
         ImageView imgCategoryHome;
@@ -42,7 +54,6 @@ public class HomeCategoryAdapter extends RecyclerView.Adapter<HomeCategoryAdapte
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-
             imgCategoryHome = itemView.findViewById(R.id.imgCategoryHome);
             txtCategoryHomeName = itemView.findViewById(R.id.txtCategoryHomeName);
         }
@@ -66,8 +77,6 @@ public class HomeCategoryAdapter extends RecyclerView.Adapter<HomeCategoryAdapte
 
         holder.txtCategoryHomeName.setText(item.getTitle());
         holder.imgCategoryHome.setImageResource(item.getImageResId());
-
-        // 🔥 AQUÍ SE CONECTA EL CLICK
         holder.bind(item, listener);
     }
 
