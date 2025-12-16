@@ -10,7 +10,10 @@ android {
 
     defaultConfig {
         applicationId = "com.example.pozoleria"
-        minSdk = 35   // 🔥 NECESARIO PARA adaptive-icon (ic_launcher)
+
+        // 🔥 NECESARIO POR TU adaptive icon (ic_launcher.xml)
+        minSdk = 26
+
         targetSdk = 34
         versionCode = 1
         versionName = "1.0"
@@ -55,7 +58,7 @@ dependencies {
     implementation("com.github.bumptech.glide:glide:4.16.0")
     annotationProcessor("com.github.bumptech.glide:compiler:4.16.0")
 
-    // Picasso (por si lo sigues usando)
+    // Picasso
     implementation("com.squareup.picasso:picasso:2.8")
 
     // Volley

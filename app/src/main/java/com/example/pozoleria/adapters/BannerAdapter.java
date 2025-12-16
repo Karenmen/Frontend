@@ -1,17 +1,12 @@
 package com.example.pozoleria.adapters;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.example.pozoleria.R;
-
 import java.util.List;
-
 public class BannerAdapter extends RecyclerView.Adapter<BannerAdapter.ViewHolder> {
 
     private List<Integer> banners;
@@ -39,7 +34,6 @@ public class BannerAdapter extends RecyclerView.Adapter<BannerAdapter.ViewHolder
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-
         ImageView imgBanner;
 
         public ViewHolder(@NonNull View itemView) {
