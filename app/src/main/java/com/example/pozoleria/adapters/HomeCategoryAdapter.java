@@ -19,10 +19,20 @@ public class HomeCategoryAdapter extends RecyclerView.Adapter<HomeCategoryAdapte
 
     private final Context context;
     private final List<CategoryItem> lista;
+    private final OnCategoryClickListener listener;
 
-    public HomeCategoryAdapter(Context context, List<CategoryItem> lista) {
+    // 🔹 Interfaz
+    public interface OnCategoryClickListener {
+        void onCategoryClick(CategoryItem category);
+    }
+
+    // 🔹 Constructor actualizado
+    public HomeCategoryAdapter(Context context,
+                               List<CategoryItem> lista,
+                               OnCategoryClickListener listener) {
         this.context = context;
         this.lista = lista;
+        this.listener = listener;
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
@@ -36,23 +46,29 @@ public class HomeCategoryAdapter extends RecyclerView.Adapter<HomeCategoryAdapte
             imgCategoryHome = itemView.findViewById(R.id.imgCategoryHome);
             txtCategoryHomeName = itemView.findViewById(R.id.txtCategoryHomeName);
         }
+
+        public void bind(CategoryItem item, OnCategoryClickListener listener) {
+            itemView.setOnClickListener(v -> listener.onCategoryClick(item));
+        }
     }
 
     @NonNull
     @Override
-    public HomeCategoryAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View vista = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.item_category_home, parent, false);
         return new ViewHolder(vista);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull HomeCategoryAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         CategoryItem item = lista.get(position);
 
-        // 🔥 CAMBIADO — AHORA USAMOS LOS NOMBRES CORRECTOS DEL DATA CLASS
         holder.txtCategoryHomeName.setText(item.getTitle());
         holder.imgCategoryHome.setImageResource(item.getImageResId());
+
+        // 🔥 AQUÍ SE CONECTA EL CLICK
+        holder.bind(item, listener);
     }
 
     @Override
