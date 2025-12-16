@@ -4,7 +4,6 @@
 
     <!-- Permiso para usar Internet -->
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 
@@ -45,6 +44,16 @@
 
         <!-- Carrito -->
         <activity android:name=".CartActivity" android:exported="false" />
+
+        <!-- Metodo de pago -->
+        <activity
+            android:name=".view.MetodoPagoActivity"
+            android:exported="false" />
+        <!-- Seleccionar Metodo de pago -->
+        <activity
+            android:name=".view.SeleccionarMetodoPagoActivity"
+            android:exported="false" />
+
 
         <!-- Login (inicio de la app) -->
         <activity
