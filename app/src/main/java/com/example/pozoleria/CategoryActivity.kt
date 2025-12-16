@@ -25,7 +25,7 @@ class CategoryActivity : AppCompatActivity() {
             CategoryItem("Pozole", R.drawable.pozole),
             CategoryItem("Hamburguesas", R.drawable.hamburguesa),
             CategoryItem("Postres", R.drawable.postres),
-            CategoryItem("PlatillosMexicanos", R.drawable.refresco),
+            CategoryItem("Platillos Mexicanos", R.drawable.refresco),
             CategoryItem("Bebidas", R.drawable.bebidas),
             CategoryItem("HotDogs", R.drawable.desayunos)
         )
