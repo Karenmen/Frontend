@@ -1,6 +1,7 @@
 package com.example.pozoleria.adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.pozoleria.R;
 import com.example.pozoleria.models.CategoryItem;
+import com.example.pozoleria.ProductsActivity; // 👈 AJUSTA SI TU ACTIVITY SE LLAMA DISTINTO
 
 import java.util.List;
 
@@ -22,16 +24,20 @@ public class HomeCategoryAdapter
     private final List<CategoryItem> lista;
     private final OnCategoryClickListener listener;
 
-    // 🔹 Constructor SIMPLE (el que usas desde HomeActivity)
+    // 🔹 Constructor SIMPLE (EL QUE YA USAS)
     public HomeCategoryAdapter(Context context, List<CategoryItem> lista) {
         this.context = context;
         this.lista = lista;
+
+        // 👇 CLICK REAL: abre productos por categoría
         this.listener = category -> {
-            // acción por defecto (no hace nada)
+            Intent intent = new Intent(context, ProductsActivity.class);
+            intent.putExtra("categoria", category.getTitle());
+            context.startActivity(intent);
         };
     }
 
-    // 🔹 Constructor COMPLETO (opcional, con click)
+    // 🔹 Constructor COMPLETO (si luego quieres manejar clicks desde fuera)
     public HomeCategoryAdapter(Context context,
                                List<CategoryItem> lista,
                                OnCategoryClickListener listener) {

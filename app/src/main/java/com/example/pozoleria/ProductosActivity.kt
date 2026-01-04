@@ -33,12 +33,16 @@ class ProductsActivity : AppCompatActivity() {
         adapter = ProductoAdapter(this, productList)
         recycler.adapter = adapter
 
-        val categoria = intent.getStringExtra("categoryName")
+        // ✅ CLAVE CORRECTA (debe coincidir con el putExtra del HomeCategoryAdapter)
+        val categoria = intent.getStringExtra("categoria")
 
-        if (categoria == null) {
+        if (categoria.isNullOrEmpty()) {
             Toast.makeText(this, "No se recibió categoría", Toast.LENGTH_SHORT).show()
             return
         }
+
+        // ✅ Detalle pro: título dinámico por categoría
+        title = categoria
 
         cargarProductos(categoria)
     }

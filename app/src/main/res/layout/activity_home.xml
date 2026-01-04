@@ -16,8 +16,11 @@
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/headerBanner"
         android:layout_width="0dp"
-        android:layout_height="230dp"
+        android:layout_height="260dp"
         android:layout_marginBottom="14dp"
+        android:clickable="true"
+        android:focusable="true"
+        android:foreground="@drawable/ripple_banner"
         app:cardCornerRadius="22dp"
         app:cardElevation="8dp"
         app:layout_constraintTop_toTopOf="parent"
@@ -28,19 +31,22 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
+            <!-- IMAGEN PROTAGONISTA -->
             <ImageView
                 android:id="@+id/imgHeader"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:src="@drawable/fondos"
-                android:scaleType="centerCrop" />
+                android:scaleType="fitCenter"
+                android:adjustViewBounds="true" />
 
-            <!-- Overlay más elegante -->
+            <!-- GRADIENT -->
             <View
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="#80000000" />
+                android:background="@drawable/gradient_banner" />
 
+            <!-- TEXTO -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -62,7 +68,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Sabor tradicional"
-                    android:textColor="#EDEDED"
+                    android:textColor="#F2F2F2"
                     android:textSize="15sp"
                     android:layout_marginTop="4dp" />
             </LinearLayout>
@@ -98,15 +104,39 @@
                 android:text="⭐ Recomendación del día"
                 android:textSize="17sp"
                 android:textStyle="bold"
-                android:textColor="#2A2A2A"/>
+                android:textColor="#2A2A2A" />
 
-            <TextView
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="• Pozole verde especial\n• Tostadas recién hechas\n• Agua fresca del día"
-                android:textSize="15sp"
-                android:textColor="#555555"
-                android:layout_marginTop="8dp"/>
+                android:layout_marginTop="10dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Pozole verde especial"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    android:textColor="#3A1902" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Hamburguesa doble especial"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    android:textColor="#3A1902" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Carlota especial"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    android:textColor="#3A1902" />
+            </LinearLayout>
+
         </LinearLayout>
 
     </com.google.android.material.card.MaterialCardView>
@@ -135,10 +165,9 @@
         android:text="Ver todas"
         android:textSize="14sp"
         android:textColor="#E27914"
-        android:padding="6dp"
+        android:layout_marginEnd="16dp"
         app:layout_constraintTop_toTopOf="@id/txtCategoriasDestacadas"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginEnd="16dp"/>
+        app:layout_constraintEnd_toEndOf="parent" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerCategoriasHome"
@@ -164,7 +193,7 @@
         android:textAllCaps="false"
         android:layout_margin="16dp"
         app:cornerRadius="18dp"
-        android:backgroundTint="#E27914"
+        android:backgroundTint="#E03F0D"
         app:layout_constraintBottom_toTopOf="@id/bottomNavigation"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
@@ -187,5 +216,6 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

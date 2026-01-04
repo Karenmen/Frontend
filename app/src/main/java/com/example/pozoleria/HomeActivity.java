@@ -3,6 +3,9 @@ package com.example.pozoleria;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.MotionEvent;
+import android.view.View;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.TextView;
 
@@ -55,48 +58,47 @@ public class HomeActivity extends AppCompatActivity {
         btnComoLlegar.setOnClickListener(v ->
                 startActivity(new Intent(this, RutaPozoleriaActivity.class)));
 
+        // ---------- EFECTO VISUAL HEADER ----------
+        View headerBanner = findViewById(R.id.headerBanner);
+        headerBanner.setOnTouchListener((v, event) -> {
+            if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                v.startAnimation(AnimationUtils.loadAnimation(this, R.anim.scale_touch));
+            } else if (event.getAction() == MotionEvent.ACTION_UP
+                    || event.getAction() == MotionEvent.ACTION_CANCEL) {
+                v.startAnimation(AnimationUtils.loadAnimation(this, R.anim.scale_release));
+            }
+            return false;
+        });
+
         // ---------- BOTTOM NAV ----------
         bottomNavigationView.setOnItemSelectedListener(this::onNavigationItemSelected);
         bottomNavigationView.setSelectedItemId(R.id.nav_home);
     }
 
-    // ===============================
-    //  MANEJO DEL MENÚ INFERIOR
-    // ===============================
     private boolean onNavigationItemSelected(@NonNull MenuItem item) {
         int id = item.getItemId();
 
-        if (id == R.id.nav_home) {
-            return true;
-        }
-
+        if (id == R.id.nav_home) return true;
         if (id == R.id.nav_categories) {
             startActivity(new Intent(this, CategoryActivity.class));
             return true;
         }
-
         if (id == R.id.nav_cart) {
             startActivity(new Intent(this, CartActivity.class));
             return true;
         }
-
-        // 🔴 CERRAR SESIÓN (ESTO ES LO QUE FALTABA)
         if (id == R.id.nav_logout) {
             mostrarDialogoCerrarSesion();
             return true;
         }
-
         return false;
     }
 
-    // ===============================
-    //  CERRAR SESIÓN
-    // ===============================
     private void mostrarDialogoCerrarSesion() {
         new AlertDialog.Builder(this)
                 .setTitle("Cerrar sesión")
                 .setMessage("¿Deseas cerrar sesión?")
-                .setPositiveButton("Sí", (dialog, which) -> cerrarSesion())
+                .setPositiveButton("Sí", (d, w) -> cerrarSesion())
                 .setNegativeButton("Cancelar", null)
                 .show();
     }
