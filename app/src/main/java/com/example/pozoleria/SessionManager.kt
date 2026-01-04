@@ -32,7 +32,7 @@ class SessionManager(context: Context) {
         pref.edit().clear().apply()
     }
 
-    // 🧩 Obtener datos del usuario si se necesitan
+
     fun getEmail(): String? = pref.getString(KEY_EMAIL, null)
     fun getUid(): String? = pref.getString(KEY_UID, null)
 }

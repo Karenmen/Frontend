@@ -6,15 +6,19 @@ plugins {
 
 android {
     namespace = "com.example.pozoleria"
-    compileSdk = 35
+
+    // 🔥 Android 16
+    compileSdk = 36
 
     defaultConfig {
         applicationId = "com.example.pozoleria"
 
-        // 🔥 NECESARIO POR TU adaptive icon (ic_launcher.xml)
+        // 🔥 requerido por adaptive icons
         minSdk = 26
 
-        targetSdk = 34
+        // 🔥 Android 16
+        targetSdk = 36
+
         versionCode = 1
         versionName = "1.0"
 
@@ -44,43 +48,29 @@ android {
         jvmTarget = "11"
     }
 }
-
 dependencies {
 
     // AndroidX
     implementation("androidx.core:core-ktx:1.13.1")
     implementation("androidx.appcompat:appcompat:1.7.0")
-    implementation("com.google.android.material:material:1.12.0")
+
+    // ✅ MATERIAL 3 ESTABLE (ESTA ERA LA CLAVE)
+    implementation("com.google.android.material:material:1.11.0")
+
     implementation("androidx.activity:activity-ktx:1.9.0")
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
 
-    // Glide
-    implementation("com.github.bumptech.glide:glide:4.16.0")
-    implementation(libs.androidx.activity)
-    annotationProcessor("com.github.bumptech.glide:compiler:4.16.0")
-
-    // Picasso
-    implementation("com.squareup.picasso:picasso:2.8")
-
-    // Volley
-    implementation("com.android.volley:volley:1.2.1")
-
-    // Google Maps + Location
+    // Maps + Location
     implementation("com.google.android.gms:play-services-maps:18.1.0")
     implementation("com.google.android.gms:play-services-location:21.0.1")
 
-    // OKHTTP
+    // Network
+    implementation("com.android.volley:volley:1.2.1")
     implementation("com.squareup.okhttp3:okhttp:4.12.0")
 
-    // Coroutines
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3")
-
-    // Lifecycle
-    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.8.0")
-
-    // Firebase Auth
+    // Firebase
     implementation("com.google.firebase:firebase-auth-ktx:22.3.1")
-
-    // Firebase Analytics
     implementation("com.google.firebase:firebase-analytics-ktx:21.5.1")
+    implementation("com.squareup.picasso:picasso:2.8")
+
 }
