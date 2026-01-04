@@ -11,9 +11,9 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.pozoleria.ProductsActivity;
 import com.example.pozoleria.R;
 import com.example.pozoleria.models.CategoryItem;
-import com.example.pozoleria.ProductsActivity; // 👈 AJUSTA SI TU ACTIVITY SE LLAMA DISTINTO
 
 import java.util.List;
 
@@ -29,15 +29,15 @@ public class HomeCategoryAdapter
         this.context = context;
         this.lista = lista;
 
-        // 👇 CLICK REAL: abre productos por categoría
+        // ✅ CLICK CORRECTO (MISMA CLAVE QUE PRODUCTS)
         this.listener = category -> {
             Intent intent = new Intent(context, ProductsActivity.class);
-            intent.putExtra("categoria", category.getTitle());
+            intent.putExtra(ProductsActivity.EXTRA_CATEGORY, category.getTitle());
             context.startActivity(intent);
         };
     }
 
-    // 🔹 Constructor COMPLETO (si luego quieres manejar clicks desde fuera)
+    // 🔹 Constructor COMPLETO (opcional)
     public HomeCategoryAdapter(Context context,
                                List<CategoryItem> lista,
                                OnCategoryClickListener listener) {
@@ -52,7 +52,6 @@ public class HomeCategoryAdapter
     }
 
     // ================= ViewHolder =================
-
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
         ImageView imgCategoryHome;

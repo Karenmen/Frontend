@@ -1,37 +1,94 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
-    android:padding="16dp"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="#FFF7F0">
 
-    <TextView
-        android:text="Selecciona método de pago"
-        android:textSize="20sp"
-        android:textStyle="bold"
-        android:layout_marginBottom="16dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+    <!-- HEADER -->
+    <LinearLayout
+        android:id="@+id/headerPago"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="20dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
 
-    <ListView
-        android:id="@+id/listTarjetas"
-        android:layout_width="match_parent"
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Método de pago"
+            android:textSize="22sp"
+            android:textStyle="bold"
+            android:textColor="#2A2A2A"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Selecciona una tarjeta o agrega una nueva"
+            android:textSize="14sp"
+            android:textColor="#777777"
+            android:layout_marginTop="4dp"/>
+    </LinearLayout>
+
+    <!-- LISTA DE TARJETAS -->
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/cardTarjetas"
+        android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_weight="1" />
+        android:layout_margin="16dp"
+        app:cardCornerRadius="20dp"
+        app:cardElevation="4dp"
+        app:layout_constraintTop_toBottomOf="@id/headerPago"
+        app:layout_constraintBottom_toTopOf="@id/layoutBotones"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
 
-    <Button
-        android:id="@+id/btnAgregarMetodo"
-        android:layout_width="match_parent"
+        <ListView
+            android:id="@+id/listTarjetas"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:divider="@android:color/transparent"
+            android:dividerHeight="12dp"
+            android:padding="16dp"/>
+    </com.google.android.material.card.MaterialCardView>
+
+    <!-- BOTONES -->
+    <LinearLayout
+        android:id="@+id/layoutBotones"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="Agregar método de pago" />
+        android:orientation="vertical"
+        android:padding="16dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
 
-    <Button
-        android:id="@+id/btnConfirmarPago"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Pagar"
-        android:layout_marginTop="8dp"
-        android:background="#D9681D"
-        android:textColor="#FFFFFF" />
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnAgregarMetodo"
+            android:layout_width="match_parent"
+            android:layout_height="52dp"
+            android:text="Agregar método de pago"
+            android:textAllCaps="false"
+            android:textStyle="bold"
+            android:backgroundTint="#6B55A3"
+            android:textColor="#FFFFFF"
+            app:cornerRadius="18dp"/>
 
-</LinearLayout>
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnConfirmarPago"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:text="Pagar"
+            android:textAllCaps="false"
+            android:textStyle="bold"
+            android:layout_marginTop="12dp"
+            android:backgroundTint="#E03F0D"
+            android:textColor="#FFFFFF"
+            app:cornerRadius="20dp"/>
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

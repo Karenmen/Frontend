@@ -31,33 +31,15 @@ class CategoryAdapter(
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = categorias[position]
 
-        // MOSTRAR NOMBRE E IMAGEN
         holder.txtCategoryName.text = item.title
         holder.imgCategory.setImageResource(item.imageResId)
 
-        // ANIMACIÓN
-        animateItem(holder.itemView)
-
-        // EVENTO DE CLIC
         holder.itemView.setOnClickListener {
-            val categoriaFinal = item.title.replace(" ", "")
             val intent = Intent(context, ProductsActivity::class.java)
-            intent.putExtra("categoryName", categoriaFinal)
+            intent.putExtra(ProductsActivity.EXTRA_CATEGORY, item.title)
             context.startActivity(intent)
         }
     }
 
     override fun getItemCount(): Int = categorias.size
-
-    // ANIMACIÓN SUAVE AL APARECER
-    private fun animateItem(view: View) {
-        view.alpha = 0f
-        view.translationY = 80f
-
-        view.animate()
-            .alpha(1f)
-            .translationY(0f)
-            .setDuration(350)
-            .start()
-    }
 }
