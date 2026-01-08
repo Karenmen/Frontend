@@ -16,7 +16,13 @@
         android:title="Carrito"
         android:icon="@drawable/ic_cart" />
 
-    <!-- 🔴 CERRAR SESIÓN -->
+    <!-- 👤 MI CUENTA -->
+    <item
+        android:id="@+id/nav_account"
+        android:title="Cuenta"
+        android:icon="@drawable/ic_luser" />
+
+    <!-- 🚪 CERRAR SESIÓN -->
     <item
         android:id="@+id/nav_logout"
         android:title="Salir"

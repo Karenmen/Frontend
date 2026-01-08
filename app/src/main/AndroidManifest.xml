@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools">
-    <!-- Permiso para usar Internet -->
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- 🔹 Permisos -->
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
@@ -11,53 +11,75 @@
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
         android:icon="@mipmap/ic_launcher"
+        android:roundIcon="@mipmap/ic_launcher_round"
         android:label="@string/app_name"
         android:networkSecurityConfig="@xml/network_security_config"
-        android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Pozoleria"
-        android:usesCleartextTraffic="true"
-        tools:targetApi="31">
-        <activity
-            android:name=".VentaDBHelper"
-            android:exported="false" />
-        <!-- API KEY DE GOOGLE MAPS -->
+        android:usesCleartextTraffic="true">
+
+        <!-- 🔹 GOOGLE MAPS -->
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyBOWahxcpmHi_ncArUsntIfKs-1c18q3aM" /> <!-- Nueva actividad de rutas -->
+            android:value="AIzaSyBOWahxcpmHi_ncArUsntIfKs-1c18q3aM" />
+
+        <!-- 🔹 ACTIVIDADES -->
+
         <activity
             android:name=".RutaPozoleriaActivity"
-            android:exported="false" /> <!-- Registro -->
+            android:exported="false" />
+
         <activity
             android:name=".RegisterActivity"
-            android:exported="false" /> <!-- Pantalla Home (después de login) -->
+            android:exported="false" />
+
         <activity
             android:name=".HomeActivity"
-            android:exported="false" /> <!-- Productos -->
+            android:exported="false" />
+
         <activity
             android:name=".ProductsActivity"
-            android:exported="false" /> <!-- Categorías -->
+            android:exported="false" />
+
         <activity
             android:name=".CategoryActivity"
-            android:exported="false" /> <!-- Carrito -->
+            android:exported="false" />
+
         <activity
             android:name=".CartActivity"
-            android:exported="false" /> <!-- Metodo de pago -->
+            android:exported="false" />
+
+        <!-- 👤 MI CUENTA -->
+        <activity
+            android:name=".MiCuentaActivity"
+            android:exported="false" />
+
+        <!-- 💳 MIS TARJETAS -->
+        <activity
+            android:name=".MisTarjetasActivity"
+            android:exported="false" />
+
+        <!-- 💳 MÉTODOS DE PAGO -->
         <activity
             android:name=".view.MetodoPagoActivity"
-            android:exported="false" /> <!-- Seleccionar Metodo de pago -->
+            android:exported="false" />
+
         <activity
             android:name=".view.SeleccionarMetodoPagoActivity"
-            android:exported="false" /> <!-- Login (inicio de la app) -->
+            android:exported="false" />
+
+        <!-- 🔑 LOGIN -->
         <activity
             android:name=".MainActivity"
             android:exported="true">
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
         </activity>
+
     </application>
 
 </manifest>

@@ -10,31 +10,35 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
-    <!-- PANEL SUPERIOR: Tiempo y distancia -->
+    <!-- PANEL SUPERIOR PREMIUM -->
     <LinearLayout
         android:id="@+id/panelInfo"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:layout_margin="12dp"
-        android:padding="12dp"
-        android:background="#AAFFFFFF"
-        android:layout_gravity="top">
+        android:layout_margin="16dp"
+        android:padding="16dp"
+        android:layout_gravity="top|start"
+        android:background="#F7FFFFFF"
+        android:elevation="8dp">
 
         <TextView
             android:id="@+id/txtTiempo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Tiempo aprox: --"
+            android:text="⏱ Tiempo aprox: --"
             android:textStyle="bold"
-            android:textSize="16sp" />
+            android:textSize="16sp"
+            android:textColor="#2A2A2A" />
 
         <TextView
             android:id="@+id/txtDistancia"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Distancia: --"
-            android:textSize="14sp" />
+            android:text="📍 Distancia: --"
+            android:textSize="14sp"
+            android:textColor="#555555"
+            android:layout_marginTop="6dp" />
 
     </LinearLayout>
 

@@ -39,7 +39,7 @@ public class HomeActivity extends AppCompatActivity {
         txtVerTodas = findViewById(R.id.txtVerTodas);
         btnComoLlegar = findViewById(R.id.btnComoLlegar);
 
-        // ---------- CATEGORÍAS ----------
+        // ---------- CATEGORÍAS DESTACADAS ----------
         List<CategoryItem> categoriasDestacadas = new ArrayList<>();
         categoriasDestacadas.add(new CategoryItem("Pozole", R.drawable.pozole));
         categoriasDestacadas.add(new CategoryItem("Hamburguesas", R.drawable.hamburguesa));
@@ -52,20 +52,25 @@ public class HomeActivity extends AppCompatActivity {
         recyclerCategoriasHome.setLayoutManager(new GridLayoutManager(this, 2));
         recyclerCategoriasHome.setAdapter(adapter);
 
+        // ---------- VER TODAS ----------
         txtVerTodas.setOnClickListener(v ->
                 startActivity(new Intent(this, CategoryActivity.class)));
 
+        // ---------- CÓMO LLEGAR ----------
         btnComoLlegar.setOnClickListener(v ->
                 startActivity(new Intent(this, RutaPozoleriaActivity.class)));
 
         // ---------- EFECTO VISUAL HEADER ----------
         View headerBanner = findViewById(R.id.headerBanner);
         headerBanner.setOnTouchListener((v, event) -> {
-            if (event.getAction() == MotionEvent.ACTION_DOWN) {
-                v.startAnimation(AnimationUtils.loadAnimation(this, R.anim.scale_touch));
-            } else if (event.getAction() == MotionEvent.ACTION_UP
-                    || event.getAction() == MotionEvent.ACTION_CANCEL) {
-                v.startAnimation(AnimationUtils.loadAnimation(this, R.anim.scale_release));
+            switch (event.getAction()) {
+                case MotionEvent.ACTION_DOWN:
+                    v.startAnimation(AnimationUtils.loadAnimation(this, R.anim.scale_touch));
+                    break;
+                case MotionEvent.ACTION_UP:
+                case MotionEvent.ACTION_CANCEL:
+                    v.startAnimation(AnimationUtils.loadAnimation(this, R.anim.scale_release));
+                    break;
             }
             return false;
         });
@@ -75,30 +80,49 @@ public class HomeActivity extends AppCompatActivity {
         bottomNavigationView.setSelectedItemId(R.id.nav_home);
     }
 
+    // ===============================
+    //  MENÚ INFERIOR
+    // ===============================
     private boolean onNavigationItemSelected(@NonNull MenuItem item) {
         int id = item.getItemId();
 
-        if (id == R.id.nav_home) return true;
+        if (id == R.id.nav_home) {
+            return true;
+        }
+
         if (id == R.id.nav_categories) {
             startActivity(new Intent(this, CategoryActivity.class));
             return true;
         }
+
         if (id == R.id.nav_cart) {
             startActivity(new Intent(this, CartActivity.class));
             return true;
         }
+
+        // 👤 MI CUENTA
+        if (id == R.id.nav_account) {
+            startActivity(new Intent(this, com.example.pozoleria.MiCuentaActivity.class));
+            return true;
+        }
+
+        // 🚪 CERRAR SESIÓN
         if (id == R.id.nav_logout) {
             mostrarDialogoCerrarSesion();
             return true;
         }
+
         return false;
     }
 
+    // ===============================
+    //  CERRAR SESIÓN
+    // ===============================
     private void mostrarDialogoCerrarSesion() {
         new AlertDialog.Builder(this)
                 .setTitle("Cerrar sesión")
                 .setMessage("¿Deseas cerrar sesión?")
-                .setPositiveButton("Sí", (d, w) -> cerrarSesion())
+                .setPositiveButton("Sí", (dialog, which) -> cerrarSesion())
                 .setNegativeButton("Cancelar", null)
                 .show();
     }

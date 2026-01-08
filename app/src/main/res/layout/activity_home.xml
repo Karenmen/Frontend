@@ -115,7 +115,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Pozole verde especial"
+                    android:text="Pozole Verde Especial"
                     android:textSize="16sp"
                     android:textStyle="bold"
                     android:textColor="#3A1902" />
@@ -123,7 +123,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Hamburguesa doble especial"
+                    android:text="Hamburguesa doble Especial"
                     android:textSize="16sp"
                     android:textStyle="bold"
                     android:textColor="#3A1902" />
@@ -131,7 +131,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Carlota especial"
+                    android:text="Carlota Especial"
                     android:textSize="16sp"
                     android:textStyle="bold"
                     android:textColor="#3A1902" />
@@ -149,7 +149,7 @@
         android:id="@+id/txtCategoriasDestacadas"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Categorías destacadas"
+        android:text="Categorías Destacadas"
         android:textStyle="bold"
         android:textSize="19sp"
         android:textColor="#222222"

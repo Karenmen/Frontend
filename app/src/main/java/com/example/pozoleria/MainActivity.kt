@@ -22,24 +22,20 @@ class MainActivity : AppCompatActivity() {
         auth = FirebaseAuth.getInstance()
         session = SessionManager(this)
 
-        // Si ya está logeado → saltar login
         if (session.isLoggedIn()) {
             startActivity(Intent(this, HomeActivity::class.java))
             finish()
             return
         }
 
-        // BOTÓN LOGIN
         binding.btnLogin.setOnClickListener {
             val email = binding.edtEmail.text.toString().trim()
             val password = binding.edtPassword.text.toString().trim()
 
             if (!validarCampos(email, password)) return@setOnClickListener
-
             iniciarSesionFirebase(email, password)
         }
 
-        // Enlace registrar
         binding.txtRegistrar.setOnClickListener {
             startActivity(Intent(this, RegisterActivity::class.java))
         }
@@ -57,7 +53,6 @@ class MainActivity : AppCompatActivity() {
         return true
     }
 
-    // 🔥 FUNCIÓN DE LOGIN CON FIREBASE + VERIFICACIÓN DE EMAIL
     private fun iniciarSesionFirebase(email: String, password: String) {
 
         auth.signInWithEmailAndPassword(email, password)
@@ -67,21 +62,25 @@ class MainActivity : AppCompatActivity() {
 
                 if (user != null && user.isEmailVerified) {
 
-                    // Guardar sesión local
-                    session.saveSession(email, user.uid)
+                    val nombre = user.displayName ?: email.substringBefore("@")
 
-                    Toast.makeText(this, "Bienvenido $email 👋", Toast.LENGTH_SHORT).show()
+                    // ✅ AQUÍ YA NO HAY ERROR
+                    session.saveSession(
+                        nombre = nombre,
+                        email = email,
+                        uid = user.uid
+                    )
+
+                    Toast.makeText(this, "Bienvenido $nombre 👋", Toast.LENGTH_SHORT).show()
                     startActivity(Intent(this, HomeActivity::class.java))
                     finish()
 
                 } else {
-
                     Toast.makeText(
                         this,
                         "Debes verificar tu correo antes de iniciar sesión.",
                         Toast.LENGTH_LONG
                     ).show()
-
                     FirebaseAuth.getInstance().signOut()
                 }
             }

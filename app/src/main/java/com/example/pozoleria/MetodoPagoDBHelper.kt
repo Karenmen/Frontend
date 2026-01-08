@@ -64,11 +64,13 @@ class MetodoPagoDBHelper(context: Context) :
             put(COL_CVV, cvv)
         }
 
-        return db.insert(TABLE_TARJETAS, null, values)
+        val result = db.insert(TABLE_TARJETAS, null, values)
+        db.close()
+        return result
     }
 
     // =============================
-    // OBTENER TARJETAS (PARA LISTVIEW)
+    // OBTENER TARJETAS (KOTLIN)
     // =============================
     fun obtenerTarjetas(): List<String> {
         val lista = mutableListOf<String>()
@@ -89,12 +91,39 @@ class MetodoPagoDBHelper(context: Context) :
                 val titular = cursor.getString(0)
                 val numero = cursor.getString(1)
                 val ultimos4 = numero.takeLast(4)
-
                 lista.add("$titular •••• $ultimos4")
             } while (cursor.moveToNext())
         }
 
         cursor.close()
+        db.close()
+        return lista
+    }
+
+    // =============================
+    // OBTENER TARJETAS (JAVA FRIENDLY)
+    // 👉 ESTE ERA EL QUE FALTABA
+    // =============================
+    fun obtenerTarjetasSimple(): ArrayList<String> {
+        val lista = ArrayList<String>()
+        val db = readableDatabase
+
+        val cursor = db.rawQuery(
+            "SELECT $COL_TITULAR, $COL_NUMERO FROM $TABLE_TARJETAS",
+            null
+        )
+
+        if (cursor.moveToFirst()) {
+            do {
+                val titular = cursor.getString(0)
+                val numero = cursor.getString(1)
+                val ultimos4 = numero.takeLast(4)
+                lista.add("$titular •••• $ultimos4")
+            } while (cursor.moveToNext())
+        }
+
+        cursor.close()
+        db.close()
         return lista
     }
 }

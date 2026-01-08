@@ -4,71 +4,82 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="10dp"
-    app:cardCornerRadius="18dp"
-    app:cardElevation="6dp"
+    android:layout_marginHorizontal="12dp"
+    android:layout_marginVertical="8dp"
+    app:cardCornerRadius="20dp"
+    app:cardElevation="8dp"
+    app:cardUseCompatPadding="true"
     app:strokeWidth="0dp">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:padding="14dp"
+        android:padding="16dp"
         android:gravity="center_vertical">
 
-        <!-- Imagen del producto (más protagonista) -->
+        <!-- IMAGEN PROTAGONISTA -->
         <ImageView
             android:id="@+id/imgProduct"
-            android:layout_width="88dp"
-            android:layout_height="88dp"
+            android:layout_width="92dp"
+            android:layout_height="92dp"
             android:scaleType="centerCrop"
             android:background="@drawable/rounded_image"
-            android:padding="2dp"
+            android:padding="3dp"
             android:src="@drawable/pozole" />
 
-        <!-- Info del producto -->
+        <!-- INFO PRODUCTO -->
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:orientation="vertical"
-            android:layout_marginStart="14dp"
-            android:layout_marginEnd="10dp">
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="12dp">
 
             <TextView
                 android:id="@+id/txtProductName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Nombre del producto"
-                android:textSize="17sp"
+                android:textSize="18sp"
                 android:textStyle="bold"
-                android:textColor="#222222" />
+                android:textColor="#1F1F1F" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Preparado al momento"
+                android:textSize="13sp"
+                android:textColor="#777777"
+                android:layout_marginTop="4dp" />
 
             <TextView
                 android:id="@+id/txtProductPrice"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="$0.00"
-                android:textSize="15sp"
+                android:textSize="16sp"
                 android:textStyle="bold"
-                android:textColor="#E27914"
-                android:layout_marginTop="6dp" />
+                android:textColor="#E03F0D"
+                android:layout_marginTop="8dp" />
         </LinearLayout>
 
-        <!-- Botón Agregar (estilo Uber Eats) -->
+        <!-- BOTÓN AGREGAR PREMIUM -->
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btnAgregar"
-            android:layout_width="42dp"
-            android:layout_height="42dp"
+            android:layout_width="46dp"
+            android:layout_height="46dp"
             android:text="+"
-            android:textSize="20sp"
+            android:textSize="22sp"
             android:textStyle="bold"
             android:textColor="#FFFFFF"
             android:insetTop="0dp"
             android:insetBottom="0dp"
             android:padding="0dp"
-            app:cornerRadius="21dp"
-            android:backgroundTint="#E27914" />
+            app:cornerRadius="23dp"
+            android:backgroundTint="#E03F0D"
+            app:rippleColor="#40FFFFFF" />
 
     </LinearLayout>
 
